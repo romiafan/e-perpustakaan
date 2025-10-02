@@ -20,7 +20,7 @@ class ProfileController extends Controller
     {
         return Inertia::render('settings/Profile', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
-            'status' => $request->session()->get('status'),
+            'status'          => $request->session()->get('status'),
         ]);
     }
 
@@ -53,7 +53,8 @@ class ProfileController extends Controller
 
         Auth::logout();
 
-        $user->delete();
+        // Use forceDelete to permanently remove user (hard delete)
+        $user->forceDelete();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

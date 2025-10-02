@@ -5,6 +5,16 @@
 **Status**: Draft  
 **Input**: User description: "i would like to build a library app. Have book catalog, search book, reservation book, book status and stock and user can login into theri profile and any library app basic function. UI/UX minimalize but interactive"
 
+## Clarifications
+
+### Session 2025-10-02
+
+- Q: What user roles should the system support? → A: Members + Librarians + Admins - role hierarchy
+- Q: How long should book reservations remain active before expiring? → A: 7 days - one week to collect
+- Q: What book details should be displayed in the catalog? → A: Standard - title, author, genre, publication year, synopsis
+- Q: What additional search criteria should be supported beyond title and author? → A: Genre + Year + ISBN - includes unique identifier
+- Q: How many books can a member reserve simultaneously? → A: 1 book - single reservation at a time
+
 ## User Scenarios & Testing
 
 ### Primary User Story
@@ -32,25 +42,25 @@ A library member visits the library app to find and reserve books. They log into
 
 - **FR-001**: System MUST allow users to create and authenticate personal accounts
 - **FR-002**: System MUST display a searchable catalog of all library books
-- **FR-003**: System MUST provide search functionality by book title, author, and [NEEDS CLARIFICATION: other search criteria like genre, ISBN, publication year?]
+- **FR-003**: System MUST provide search functionality by book title, author, genre, publication year, and ISBN
 - **FR-004**: System MUST show real-time availability and stock count for each book
-- **FR-005**: System MUST allow logged-in users to reserve available books
+- **FR-005**: System MUST allow logged-in members to reserve available books (maximum 1 active reservation per member)
 - **FR-006**: System MUST track and display user's active reservations in their profile
 - **FR-007**: System MUST show borrowing history in user profiles
-- **FR-008**: System MUST prevent reservation of unavailable books
+- **FR-008**: System MUST prevent reservation of unavailable books and enforce single reservation limit
 - **FR-009**: System MUST update stock counts when reservations are made or cancelled
 - **FR-010**: System MUST provide a minimalist, interactive user interface
 - **FR-011**: System MUST handle user authentication securely
 - **FR-012**: System MUST allow users to cancel their own reservations
-- **FR-013**: System MUST display book details including [NEEDS CLARIFICATION: what specific details - synopsis, publisher, publication date, genre?]
-- **FR-014**: System MUST support [NEEDS CLARIFICATION: reservation time limits and pickup deadlines?]
-- **FR-015**: System MUST handle [NEEDS CLARIFICATION: different user types - regular members vs admin/librarian access?]
+- **FR-013**: System MUST display book details including title, author, genre, publication year, and synopsis
+- **FR-014**: System MUST automatically expire reservations after 7 days and return books to available status
+- **FR-015**: System MUST support three user roles: Members (can search/reserve books), Librarians (can manage books/reservations), and Admins (full system access)
 
 ### Key Entities
 
-- **User**: Represents library members with login credentials, personal information, and borrowing privileges
-- **Book**: Represents library collection items with title, author, availability status, and stock quantity
-- **Reservation**: Links users to books they've reserved, includes reservation date and status
+- **User**: Represents library members with login credentials, personal information, and borrowing privileges. Includes role (Member/Librarian/Admin)
+- **Book**: Represents library collection items with title, author, genre, publication year, synopsis, ISBN, availability status, and stock quantity
+- **Reservation**: Links users to books they've reserved, includes reservation date, expiration date (7 days), and status
 - **Catalog**: Collection of all books available in the library system
 - **User Profile**: Contains user's personal information, active reservations, and borrowing history
 

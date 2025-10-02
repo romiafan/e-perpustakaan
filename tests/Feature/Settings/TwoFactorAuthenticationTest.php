@@ -10,7 +10,7 @@ test('two factor settings page can be rendered', function () {
     }
 
     Features::twoFactorAuthentication([
-        'confirm' => true,
+        'confirm'         => true,
         'confirmPassword' => true,
     ]);
 
@@ -33,7 +33,7 @@ test('two factor settings page requires password confirmation when enabled', fun
     $user = User::factory()->create();
 
     Features::twoFactorAuthentication([
-        'confirm' => true,
+        'confirm'         => true,
         'confirmPassword' => true,
     ]);
 
@@ -51,7 +51,7 @@ test('two factor settings page does not requires password confirmation when disa
     $user = User::factory()->create();
 
     Features::twoFactorAuthentication([
-        'confirm' => true,
+        'confirm'         => true,
         'confirmPassword' => false,
     ]);
 

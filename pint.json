@@ -1,0 +1,30 @@
+{
+    "preset": "laravel",
+    "rules": {
+        "simplified_null_return": true,
+        "nullable_type_declaration_for_default_null_value": true,
+        "concat_space": {
+            "spacing": "one"
+        },
+        "binary_operator_spaces": {
+            "default": "single_space",
+            "operators": {
+                "=>": "align_single_space_minimal",
+                "=": "align_single_space_minimal"
+            }
+        },
+        "array_syntax": {
+            "syntax": "short"
+        },
+        "no_unused_imports": true,
+        "ordered_imports": {
+            "sort_algorithm": "alpha"
+        },
+        "class_attributes_separation": {
+            "elements": {
+                "method": "one",
+                "property": "one"
+            }
+        }
+    }
+}

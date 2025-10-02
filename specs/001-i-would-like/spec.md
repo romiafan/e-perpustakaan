@@ -8,9 +8,11 @@
 ## User Scenarios & Testing
 
 ### Primary User Story
+
 A library member visits the library app to find and reserve books. They log into their personal account, search the book catalog by title or author, check availability and stock status, make reservations for available books, and manage their profile including viewing their current reservations and borrowing history.
 
 ### Acceptance Scenarios
+
 1. **Given** a user with valid credentials, **When** they attempt to log in, **Then** they should access their personalized dashboard
 2. **Given** a logged-in user, **When** they search for a book by title, **Then** they should see matching books with availability status
 3. **Given** a logged-in user viewing an available book, **When** they click reserve, **Then** the book should be reserved for them and stock should decrease
@@ -18,6 +20,7 @@ A library member visits the library app to find and reserve books. They log into
 5. **Given** a user searching for books, **When** no matches are found, **Then** they should see a helpful "no results" message with search suggestions
 
 ### Edge Cases
+
 - What happens when a user tries to reserve a book that just became unavailable?
 - How does the system handle simultaneous reservation attempts for the last copy?
 - What occurs when a user's session expires during a reservation process?
@@ -26,6 +29,7 @@ A library member visits the library app to find and reserve books. They log into
 ## Requirements
 
 ### Functional Requirements
+
 - **FR-001**: System MUST allow users to create and authenticate personal accounts
 - **FR-002**: System MUST display a searchable catalog of all library books
 - **FR-003**: System MUST provide search functionality by book title, author, and [NEEDS CLARIFICATION: other search criteria like genre, ISBN, publication year?]
@@ -43,6 +47,7 @@ A library member visits the library app to find and reserve books. They log into
 - **FR-015**: System MUST handle [NEEDS CLARIFICATION: different user types - regular members vs admin/librarian access?]
 
 ### Key Entities
+
 - **User**: Represents library members with login credentials, personal information, and borrowing privileges
 - **Book**: Represents library collection items with title, author, availability status, and stock quantity
 - **Reservation**: Links users to books they've reserved, includes reservation date and status
@@ -52,14 +57,16 @@ A library member visits the library app to find and reserve books. They log into
 ## Review & Acceptance Checklist
 
 ### Content Quality
+
 - [x] No implementation details (languages, frameworks, APIs)
 - [x] Focused on user value and business needs
 - [x] Written for non-technical stakeholders
 - [x] All mandatory sections completed
 
 ### Requirement Completeness
+
 - [ ] No [NEEDS CLARIFICATION] markers remain
-- [x] Requirements are testable and unambiguous  
+- [x] Requirements are testable and unambiguous
 - [x] Success criteria are measurable
 - [x] Scope is clearly bounded
 - [x] Dependencies and assumptions identified

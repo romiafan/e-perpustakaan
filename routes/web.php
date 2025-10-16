@@ -15,6 +15,23 @@ Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// Inertia pages for frontend
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/catalog', [BookController::class, 'catalog'])->name('books.catalog');
+
+    Route::get('/books/{id}/details', function ($id) {
+        return Inertia::render('Books/Detail', ['bookId' => $id]);
+    })->name('books.detail');
+
+    Route::get('/my-reservations', function () {
+        return Inertia::render('Reservations/Index');
+    })->name('reservations.index');
+
+    Route::get('/my-profile', function () {
+        return Inertia::render('Profile/Index');
+    })->name('profile.index');
+});
+
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';
 

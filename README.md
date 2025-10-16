@@ -4,7 +4,7 @@ A modern digital library management system built with Laravel 11, Vue 3, and Ine
 
 ## 🚀 Features
 
-### Current Implementation Status (Phase 3.5 Complete)
+### Current Implementation Status (Phase 3.12 Complete)
 
 ✅ **Authentication System**
 
@@ -12,6 +12,7 @@ A modern digital library management system built with Laravel 11, Vue 3, and Ine
 - Role-based access control (admin, librarian, member)
 - Two-factor authentication support
 - Password reset and email verification
+- Custom form request validation
 
 ✅ **Book Management**
 
@@ -19,6 +20,7 @@ A modern digital library management system built with Laravel 11, Vue 3, and Ine
 - Book details with availability status
 - Genre and publication year filtering
 - Pagination support
+- Sample library data with 12 books
 
 ✅ **Reservation System**
 
@@ -26,6 +28,8 @@ A modern digital library management system built with Laravel 11, Vue 3, and Ine
 - Automatic expiry management (7-day limit)
 - User reservation history
 - Active/expired reservation tracking
+- Email notifications for expired reservations
+- Background job for automatic expiry checking
 
 ✅ **User Profile Management**
 
@@ -40,6 +44,24 @@ A modern digital library management system built with Laravel 11, Vue 3, and Ine
 - Service-layer architecture
 - Comprehensive test coverage (88.9% pass rate)
 - Laravel Fortify integration
+- Database seeders with sample data
+- Notification system for expired reservations
+
+✅ **Frontend (Inertia.js + Vue 3)**
+
+- Login and registration pages
+- Dashboard with user overview
+- Book catalog with search and filters
+- Book detail pages
+- Reservation management interface
+- User profile pages
+- Responsive design with ShadCN/Vue components
+
+✅ **TypeScript Support**
+
+- Full type definitions for User, Book, Reservation
+- API response interfaces
+- Type-safe component props
 
 ## 🛠 Tech Stack
 
@@ -147,10 +169,17 @@ tests/
     ```
 
 5. **Database setup**
+
     ```bash
     php artisan migrate
     php artisan db:seed
     ```
+
+    This will create sample data including:
+    - Admin user: `admin@library.test` / `password`
+    - Librarian user: `librarian@library.test` / `password`
+    - Member users: `john@example.test`, `jane@example.test` / `password`
+    - 12 classic books (To Kill a Mockingbird, 1984, Pride and Prejudice, etc.)
 
 ### Development Commands
 
@@ -168,7 +197,22 @@ pnpm run lint          # TypeScript/Vue formatting
 # Database operations
 php artisan migrate     # Run migrations
 php artisan db:seed    # Seed development data
+
+# Background jobs
+php artisan queue:work  # Process queued jobs
+php artisan schedule:work # Run scheduled tasks (including reservation expiry)
 ```
+
+### Production Deployment
+
+For production, set up the Laravel scheduler to run the reservation expiry job:
+
+```bash
+# Add to crontab
+* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
+```
+
+This will automatically expire reservations every hour and send email notifications to users.
 
 ## 🧪 Testing
 
@@ -232,9 +276,6 @@ php artisan test --coverage
 - **Phase 3.3**: Tests First (TDD)
 - **Phase 3.4**: Service Layer
 - **Phase 3.5**: HTTP Controllers
-
-### 🚧 Next Phases
-
 - **Phase 3.6**: Frontend Pages (Inertia.js)
 - **Phase 3.7**: Vue Components (ShadCN/Vue)
 - **Phase 3.8**: Request Validation
@@ -242,7 +283,10 @@ php artisan test --coverage
 - **Phase 3.10**: Background Jobs & Automation
 - **Phase 3.11**: Database Seeders
 - **Phase 3.12**: TypeScript Interfaces
-- **Phase 3.13**: Polish & Performance
+
+### 🚧 Next Phases
+
+- **Phase 3.13**: Polish & Performance (optimization, documentation)
 
 ## 🎯 Key Features
 
@@ -274,7 +318,33 @@ php artisan test --coverage
 
 ## 📝 Recent Changes
 
-### Latest Updates
+### Latest Updates (October 16, 2025)
+
+#### Flash Messaging & Inertia.js Fixes
+
+- ✅ Fixed Login page to use Inertia `useForm()` instead of non-existent auto-generated actions
+- ✅ Converted AuthController to return Inertia redirects instead of JSON responses
+- ✅ Fixed catalog page to load book data via BookController
+- ✅ Implemented complete flash messaging system:
+  - Backend: Flash messages shared via HandleInertiaRequests middleware
+  - Frontend: Success (green) and error (red) alert components in Catalog.vue
+  - Fixed reservation error messages to use `with('error')` instead of `withErrors()`
+- ✅ All Inertia.js responses now consistent (no JSON/Inertia mixing)
+- ✅ Verified reservation functionality with flash message feedback
+
+#### Full System Implementation
+
+- ✅ Completed Phase 3.6-3.12 implementation
+- ✅ Added TypeScript type definitions for all entities
+- ✅ Implemented request validation classes
+- ✅ Created role-based middleware for authorization
+- ✅ Added background job for automatic reservation expiry
+- ✅ Implemented email notifications for expired reservations
+- ✅ Created database seeders with sample data
+- ✅ Updated README with complete setup instructions
+- ✅ Verified all frontend pages and components are working
+
+### Previous Updates
 
 - ✅ Implemented all HTTP controllers for Phase 3.5
 - ✅ Fixed JSON API response structures

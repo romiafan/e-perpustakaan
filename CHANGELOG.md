@@ -37,10 +37,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Issue**: Inertia pages receiving plain JSON responses causing compatibility errors
 - **Cause**: `AuthController` was returning JSON responses instead of Inertia redirects
-- **Fix**: 
-  - `login()` now returns `redirect()->intended('/dashboard')`
-  - `register()` now returns `redirect('/dashboard')`
-  - `logout()` now returns `redirect('/login')`
+- **Fix**:
+    - `login()` now returns `redirect()->intended('/dashboard')`
+    - `register()` now returns `redirect('/dashboard')`
+    - `logout()` now returns `redirect('/login')`
 - **Impact**: Consistent Inertia.js experience throughout authentication flow
 
 #### Book Catalog Page
@@ -54,9 +54,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Issue**: "All Inertia requests must receive a valid Inertia response, however a plain JSON response was received"
 - **Cause**: `ReservationController::store()` was returning JSON responses
-- **Fix**: 
-  - Changed to return `back()->with('success', $message)` for successful reservations
-  - Changed error handling to use `with('error', $message)` instead of `withErrors()`
+- **Fix**:
+    - Changed to return `back()->with('success', $message)` for successful reservations
+    - Changed error handling to use `with('error', $message)` instead of `withErrors()`
 - **Impact**: Reservations now work with proper user feedback via flash messages
 
 #### Flash Message Visibility
@@ -76,14 +76,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Technical Details
 
 - **Affected Files**:
-  - `app/Http/Controllers/AuthController.php` - Inertia redirects
-  - `app/Http/Controllers/BookController.php` - Added catalog method
-  - `app/Http/Controllers/ReservationController.php` - Flash message integration
-  - `app/Http/Middleware/HandleInertiaRequests.php` - Flash message sharing
-  - `resources/js/pages/Auth/Login.vue` - Proper form handling
-  - `resources/js/pages/Books/Catalog.vue` - Flash message display
-  - `resources/js/types/index.d.ts` - Flash message types
-  - `routes/web.php` - Updated catalog route
+    - `app/Http/Controllers/AuthController.php` - Inertia redirects
+    - `app/Http/Controllers/BookController.php` - Added catalog method
+    - `app/Http/Controllers/ReservationController.php` - Flash message integration
+    - `app/Http/Middleware/HandleInertiaRequests.php` - Flash message sharing
+    - `resources/js/pages/Auth/Login.vue` - Proper form handling
+    - `resources/js/pages/Books/Catalog.vue` - Flash message display
+    - `resources/js/types/index.d.ts` - Flash message types
+    - `routes/web.php` - Updated catalog route
 
 ## [0.5.0] - 2025-10-02
 

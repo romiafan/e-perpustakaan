@@ -326,9 +326,9 @@ php artisan test --coverage
 - ✅ Converted AuthController to return Inertia redirects instead of JSON responses
 - ✅ Fixed catalog page to load book data via BookController
 - ✅ Implemented complete flash messaging system:
-  - Backend: Flash messages shared via HandleInertiaRequests middleware
-  - Frontend: Success (green) and error (red) alert components in Catalog.vue
-  - Fixed reservation error messages to use `with('error')` instead of `withErrors()`
+    - Backend: Flash messages shared via HandleInertiaRequests middleware
+    - Frontend: Success (green) and error (red) alert components in Catalog.vue
+    - Fixed reservation error messages to use `with('error')` instead of `withErrors()`
 - ✅ All Inertia.js responses now consistent (no JSON/Inertia mixing)
 - ✅ Verified reservation functionality with flash message feedback
 

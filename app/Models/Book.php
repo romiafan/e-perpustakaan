@@ -18,6 +18,7 @@ class Book extends Model
         'genre',
         'publication_year',
         'synopsis',
+        'cover_image',
         'stock_quantity',
         'available_quantity',
     ];

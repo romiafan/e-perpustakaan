@@ -1,4 +1,5 @@
 <template>
+
     <Head title="Book Catalog" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
@@ -31,20 +32,13 @@
                         <div class="grid gap-4 md:grid-cols-4">
                             <div class="md:col-span-2">
                                 <Label for="search">Search by title or author</Label>
-                                <Input
-                                    id="search"
-                                    v-model="searchForm.search"
-                                    placeholder="Enter book title or author name..."
-                                    class="w-full"
-                                />
+                                <Input id="search" v-model="searchForm.search"
+                                    placeholder="Enter book title or author name..." class="w-full" />
                             </div>
                             <div>
                                 <Label for="genre">Genre</Label>
-                                <select
-                                    id="genre"
-                                    v-model="searchForm.genre"
-                                    class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                                >
+                                <select id="genre" v-model="searchForm.genre"
+                                    class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
                                     <option value="">All Genres</option>
                                     <option v-for="genre in filters.genres" :key="genre" :value="genre">
                                         {{ genre }}
@@ -53,11 +47,8 @@
                             </div>
                             <div>
                                 <Label for="year">Publication Year</Label>
-                                <select
-                                    id="year"
-                                    v-model="searchForm.year"
-                                    class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                                >
+                                <select id="year" v-model="searchForm.year"
+                                    class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
                                     <option value="">All Years</option>
                                     <option v-for="year in filters.years" :key="year" :value="year">
                                         {{ year }}
@@ -99,12 +90,8 @@
                     </p>
                     <div class="flex items-center gap-2">
                         <Label for="sort">Sort by:</Label>
-                        <select
-                            id="sort"
-                            v-model="sortBy"
-                            @change="handleSortChange"
-                            class="rounded-md border border-input bg-background px-3 py-1 text-sm"
-                        >
+                        <select id="sort" v-model="sortBy" @change="handleSortChange"
+                            class="rounded-md border border-input bg-background px-3 py-1 text-sm">
                             <option value="title">Title</option>
                             <option value="author">Author</option>
                             <option value="year">Publication Year</option>
@@ -114,12 +101,26 @@
 
                 <!-- Book Grid -->
                 <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    <Card
-                        v-for="book in books"
-                        :key="book.id"
-                        class="hover:shadow-lg transition-shadow cursor-pointer"
-                        @click="viewBook(book.id)"
-                    >
+                    <Card v-for="book in books" :key="book.id"
+                        class="hover:shadow-lg transition-shadow cursor-pointer overflow-hidden"
+                        @click="viewBook(book.id)">
+                        <!-- Book Cover Image -->
+                        <div class="relative w-full aspect-[2/3] bg-gray-100">
+                            <img v-if="book.cover_image" :src="book.cover_image" :alt="book.title"
+                                class="w-full h-full object-cover" @error="handleImageError" />
+                            <div v-else
+                                class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-200 to-gray-300">
+                                <BookOpen class="h-16 w-16 text-gray-400" />
+                            </div>
+                            <!-- Availability Badge -->
+                            <div class="absolute top-2 right-2">
+                                <span class="px-2 py-1 rounded-full text-xs font-medium"
+                                    :class="book.is_available ? 'bg-green-500 text-white' : 'bg-red-500 text-white'">
+                                    {{ book.is_available ? 'Available' : 'Unavailable' }}
+                                </span>
+                            </div>
+                        </div>
+
                         <CardHeader>
                             <CardTitle class="line-clamp-2">{{ book.title }}</CardTitle>
                             <p class="text-sm text-muted-foreground">by {{ book.author }}</p>
@@ -134,40 +135,23 @@
                                 <span>{{ book.publication_year }}</span>
                             </div>
                             <div class="flex justify-between text-sm">
-                                <span class="text-muted-foreground">Available:</span>
+                                <span class="text-muted-foreground">Copies:</span>
                                 <span :class="book.is_available ? 'text-green-600' : 'text-red-600'">
                                     {{ book.available_quantity }} / {{ book.stock_quantity }}
                                 </span>
                             </div>
-                            <p class="text-sm text-muted-foreground line-clamp-3">
-                                {{ book.synopsis }}
-                            </p>
                             <div class="flex gap-2 pt-2">
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    class="flex-1"
-                                    @click.stop="viewBook(book.id)"
-                                >
+                                <Button variant="outline" size="sm" class="flex-1" @click.stop="viewBook(book.id)">
                                     View Details
                                 </Button>
-                                <Button
-                                    v-if="book.is_available && book.can_reserve !== false"
-                                    size="sm"
-                                    class="flex-1"
-                                    @click.stop="reserveBook(book.id)"
-                                    :disabled="reserving === book.id"
-                                >
-                                    <div v-if="reserving === book.id" class="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"></div>
+                                <Button v-if="book.is_available && book.can_reserve !== false" size="sm" class="flex-1"
+                                    @click.stop="reserveBook(book.id)" :disabled="reserving === book.id">
+                                    <div v-if="reserving === book.id"
+                                        class="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent">
+                                    </div>
                                     <span v-else>Reserve</span>
                                 </Button>
-                                <Button
-                                    v-else
-                                    size="sm"
-                                    variant="secondary"
-                                    class="flex-1"
-                                    disabled
-                                >
+                                <Button v-else size="sm" variant="secondary" class="flex-1" disabled>
                                     {{ book.is_available ? 'Cannot Reserve' : 'Unavailable' }}
                                 </Button>
                             </div>
@@ -177,29 +161,19 @@
 
                 <!-- Pagination -->
                 <div v-if="meta.last_page > 1" class="flex justify-center space-x-2">
-                    <Button
-                        variant="outline"
-                        :disabled="meta.current_page === 1"
-                        @click="changePage(meta.current_page - 1)"
-                    >
+                    <Button variant="outline" :disabled="meta.current_page === 1"
+                        @click="changePage(meta.current_page - 1)">
                         Previous
                     </Button>
                     <div class="flex space-x-1">
-                        <Button
-                            v-for="page in visiblePages"
-                            :key="page"
-                            :variant="page === meta.current_page ? 'default' : 'outline'"
-                            size="sm"
-                            @click="changePage(page)"
-                        >
+                        <Button v-for="page in visiblePages" :key="page"
+                            :variant="page === meta.current_page ? 'default' : 'outline'" size="sm"
+                            @click="changePage(page)">
                             {{ page }}
                         </Button>
                     </div>
-                    <Button
-                        variant="outline"
-                        :disabled="meta.current_page === meta.last_page"
-                        @click="changePage(meta.current_page + 1)"
-                    >
+                    <Button variant="outline" :disabled="meta.current_page === meta.last_page"
+                        @click="changePage(meta.current_page + 1)">
                         Next
                     </Button>
                 </div>
@@ -341,6 +315,12 @@ const reserveBook = async (bookId: number) => {
             reserving.value = null;
         }
     });
+};
+
+const handleImageError = (event: Event) => {
+    const img = event.target as HTMLImageElement;
+    // Hide broken image and show placeholder
+    img.style.display = 'none';
 };
 </script>
 

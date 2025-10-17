@@ -50,6 +50,7 @@ export interface Book {
     genre: string;
     publication_year: number;
     synopsis: string;
+    cover_image?: string;
     stock_quantity: number;
     available_quantity: number;
     is_available: boolean;

@@ -3,6 +3,14 @@
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-6 p-6">
+            <!-- Flash Messages -->
+            <div v-if="page.props.flash?.success" class="rounded-lg bg-green-50 p-4 dark:bg-green-900/20">
+                <p class="text-sm text-green-800 dark:text-green-200">{{ page.props.flash.success }}</p>
+            </div>
+            <div v-if="page.props.flash?.error" class="rounded-lg bg-red-50 p-4 dark:bg-red-900/20">
+                <p class="text-sm text-red-800 dark:text-red-200">{{ page.props.flash.error }}</p>
+            </div>
+
             <!-- Header with back button -->
             <div class="flex items-center gap-4">
                 <Button variant="outline" @click="goBack">
@@ -64,8 +72,8 @@
                         </CardHeader>
                         <CardContent>
                             <p class="text-sm text-muted-foreground">
-                                {{ book.active_reservations_count }} 
-                                {{ book.active_reservations_count === 1 ? 'person has' : 'people have' }} 
+                                {{ book.active_reservations_count }}
+                                {{ book.active_reservations_count === 1 ? 'person has' : 'people have' }}
                                 currently reserved this book.
                             </p>
                         </CardContent>
@@ -83,9 +91,9 @@
                         </CardHeader>
                         <CardContent class="space-y-4">
                             <!-- Availability Status -->
-                            <div class="flex items-center gap-2 p-3 rounded-md" 
+                            <div class="flex items-center gap-2 p-3 rounded-md"
                                  :class="book.is_available ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'">
-                                <div class="h-2 w-2 rounded-full" 
+                                <div class="h-2 w-2 rounded-full"
                                      :class="book.is_available ? 'bg-green-500' : 'bg-red-500'"></div>
                                 <span class="text-sm font-medium">
                                     {{ book.is_available ? 'Available for reservation' : 'Currently unavailable' }}
@@ -101,7 +109,7 @@
 
                             <!-- Reserve Button -->
                             <div class="space-y-3">
-                                <Button 
+                                <Button
                                     v-if="book.is_available && book.can_reserve !== false"
                                     class="w-full"
                                     :disabled="reserving"
@@ -111,8 +119,8 @@
                                     <Calendar class="h-4 w-4 mr-2" v-else />
                                     {{ reserving ? 'Reserving...' : 'Reserve Now' }}
                                 </Button>
-                                
-                                <Button 
+
+                                <Button
                                     v-else-if="!book.is_available"
                                     variant="secondary"
                                     class="w-full"
@@ -121,8 +129,8 @@
                                     <XCircle class="h-4 w-4 mr-2" />
                                     Currently Unavailable
                                 </Button>
-                                
-                                <Button 
+
+                                <Button
                                     v-else
                                     variant="secondary"
                                     class="w-full"
@@ -203,9 +211,9 @@ const goToReservations = () => {
 
 const reserveBook = async () => {
     if (reserving.value) return;
-    
+
     reserving.value = true;
-    
+
     router.post('/reservations', { book_id: book.id }, {
         onSuccess: () => {
             // Refresh the page to update availability

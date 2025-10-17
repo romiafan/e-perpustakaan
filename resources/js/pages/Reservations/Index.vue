@@ -3,18 +3,20 @@
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-6 p-6">
+            <!-- Flash Messages -->
+            <div v-if="page.props.flash?.success" class="rounded-lg bg-green-50 p-4 dark:bg-green-900/20">
+                <p class="text-sm text-green-800 dark:text-green-200">{{ page.props.flash.success }}</p>
+            </div>
+            <div v-if="page.props.flash?.error" class="rounded-lg bg-red-50 p-4 dark:bg-red-900/20">
+                <p class="text-sm text-red-800 dark:text-red-200">{{ page.props.flash.error }}</p>
+            </div>
+
             <!-- Header -->
-            <div class="flex items-center justify-between">
-                <div>
-                    <h1 class="text-3xl font-bold tracking-tight">My Reservations</h1>
-                    <p class="text-muted-foreground">
-                        Manage your current and past book reservations
-                    </p>
-                </div>
-                <Button @click="goToCatalog" class="flex items-center gap-2">
-                    <BookOpen class="h-4 w-4" />
-                    Browse Books
-                </Button>
+            <div>
+                <h1 class="text-3xl font-bold tracking-tight">My Reservations</h1>
+                <p class="text-muted-foreground">
+                    Manage your current and past book reservations
+                </p>
             </div>
 
             <!-- Active Reservations -->
@@ -56,9 +58,9 @@
                                     </p>
                                 </div>
                             </div>
-                            
+
                             <!-- Expiry Warning -->
-                            <div v-if="reservation.days_remaining && reservation.days_remaining <= 2" 
+                            <div v-if="reservation.days_remaining && reservation.days_remaining <= 2"
                                  class="flex items-center gap-2 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
                                 <AlertTriangle class="h-4 w-4 text-yellow-600" />
                                 <span class="text-sm text-yellow-800">
@@ -67,15 +69,15 @@
                             </div>
 
                             <div class="flex gap-2 pt-2">
-                                <Button 
-                                    variant="outline" 
+                                <Button
+                                    variant="outline"
                                     size="sm"
                                     @click="viewBook(reservation.book.id)"
                                 >
                                     View Book Details
                                 </Button>
-                                <Button 
-                                    variant="destructive" 
+                                <Button
+                                    variant="destructive"
                                     size="sm"
                                     @click="cancelReservation(reservation.id)"
                                     :disabled="cancelling === reservation.id"
@@ -137,8 +139,8 @@
                                     <p class="text-sm">{{ formatDate(reservation.collected_at) }}</p>
                                 </div>
                                 <div>
-                                    <Button 
-                                        variant="outline" 
+                                    <Button
+                                        variant="outline"
                                         size="sm"
                                         @click="viewBook(reservation.book.id)"
                                     >
@@ -233,13 +235,13 @@ const viewBook = (bookId: number) => {
 
 const cancelReservation = async (reservationId: number) => {
     if (cancelling.value) return;
-    
+
     if (!confirm('Are you sure you want to cancel this reservation?')) {
         return;
     }
-    
+
     cancelling.value = reservationId;
-    
+
     router.patch(`/reservations/${reservationId}`, { status: 'cancelled' }, {
         onSuccess: () => {
             // Refresh the page to update the reservations

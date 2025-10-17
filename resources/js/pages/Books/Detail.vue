@@ -1,4 +1,5 @@
 <template>
+
     <Head :title="`${book.title} - Book Details`" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
@@ -23,33 +24,49 @@
             <div class="grid gap-6 lg:grid-cols-3">
                 <!-- Main book information -->
                 <div class="lg:col-span-2 space-y-6">
+                    <!-- Book Cover and Basic Info -->
                     <Card>
-                        <CardHeader>
-                            <CardTitle class="text-2xl">{{ book.title }}</CardTitle>
-                            <p class="text-lg text-muted-foreground">by {{ book.author }}</p>
-                        </CardHeader>
-                        <CardContent class="space-y-4">
-                            <div class="grid gap-4 md:grid-cols-2">
-                                <div>
-                                    <Label class="text-sm font-medium">Genre</Label>
-                                    <p class="text-sm text-muted-foreground">{{ book.genre }}</p>
-                                </div>
-                                <div>
-                                    <Label class="text-sm font-medium">Publication Year</Label>
-                                    <p class="text-sm text-muted-foreground">{{ book.publication_year }}</p>
-                                </div>
-                                <div>
-                                    <Label class="text-sm font-medium">ISBN</Label>
-                                    <p class="text-sm text-muted-foreground">{{ book.isbn }}</p>
-                                </div>
-                                <div>
-                                    <Label class="text-sm font-medium">Availability</Label>
-                                    <p class="text-sm" :class="book.is_available ? 'text-green-600' : 'text-red-600'">
-                                        {{ book.available_quantity }} of {{ book.stock_quantity }} available
-                                    </p>
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <!-- Book Cover -->
+                            <div class="md:col-span-1">
+                                <div class="relative w-full aspect-[2/3] bg-gray-100 rounded-lg overflow-hidden">
+                                    <img v-if="book.cover_image" :src="book.cover_image" :alt="book.title"
+                                        class="w-full h-full object-cover" @error="handleImageError" />
+                                    <div v-else
+                                        class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-200 to-gray-300">
+                                        <BookOpen class="h-24 w-24 text-gray-400" />
+                                    </div>
                                 </div>
                             </div>
-                        </CardContent>
+
+                            <!-- Book Info -->
+                            <div class="md:col-span-2 p-6">
+                                <CardTitle class="text-2xl mb-2">{{ book.title }}</CardTitle>
+                                <p class="text-lg text-muted-foreground mb-6">by {{ book.author }}</p>
+
+                                <div class="grid gap-4 md:grid-cols-2">
+                                    <div>
+                                        <Label class="text-sm font-medium">Genre</Label>
+                                        <p class="text-sm text-muted-foreground">{{ book.genre }}</p>
+                                    </div>
+                                    <div>
+                                        <Label class="text-sm font-medium">Publication Year</Label>
+                                        <p class="text-sm text-muted-foreground">{{ book.publication_year }}</p>
+                                    </div>
+                                    <div>
+                                        <Label class="text-sm font-medium">ISBN</Label>
+                                        <p class="text-sm text-muted-foreground">{{ book.isbn }}</p>
+                                    </div>
+                                    <div>
+                                        <Label class="text-sm font-medium">Availability</Label>
+                                        <p class="text-sm"
+                                            :class="book.is_available ? 'text-green-600' : 'text-red-600'">
+                                            {{ book.available_quantity }} of {{ book.stock_quantity }} available
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </Card>
 
                     <!-- Synopsis -->
@@ -92,9 +109,9 @@
                         <CardContent class="space-y-4">
                             <!-- Availability Status -->
                             <div class="flex items-center gap-2 p-3 rounded-md"
-                                 :class="book.is_available ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'">
+                                :class="book.is_available ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'">
                                 <div class="h-2 w-2 rounded-full"
-                                     :class="book.is_available ? 'bg-green-500' : 'bg-red-500'"></div>
+                                    :class="book.is_available ? 'bg-green-500' : 'bg-red-500'"></div>
                                 <span class="text-sm font-medium">
                                     {{ book.is_available ? 'Available for reservation' : 'Currently unavailable' }}
                                 </span>
@@ -109,33 +126,21 @@
 
                             <!-- Reserve Button -->
                             <div class="space-y-3">
-                                <Button
-                                    v-if="book.is_available && book.can_reserve !== false"
-                                    class="w-full"
-                                    :disabled="reserving"
-                                    @click="reserveBook"
-                                >
-                                    <div v-if="reserving" class="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent mr-2"></div>
+                                <Button v-if="book.is_available && book.can_reserve !== false" class="w-full"
+                                    :disabled="reserving" @click="reserveBook">
+                                    <div v-if="reserving"
+                                        class="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent mr-2">
+                                    </div>
                                     <Calendar class="h-4 w-4 mr-2" v-else />
                                     {{ reserving ? 'Reserving...' : 'Reserve Now' }}
                                 </Button>
 
-                                <Button
-                                    v-else-if="!book.is_available"
-                                    variant="secondary"
-                                    class="w-full"
-                                    disabled
-                                >
+                                <Button v-else-if="!book.is_available" variant="secondary" class="w-full" disabled>
                                     <XCircle class="h-4 w-4 mr-2" />
                                     Currently Unavailable
                                 </Button>
 
-                                <Button
-                                    v-else
-                                    variant="secondary"
-                                    class="w-full"
-                                    disabled
-                                >
+                                <Button v-else variant="secondary" class="w-full" disabled>
                                     <AlertCircle class="h-4 w-4 mr-2" />
                                     Cannot Reserve
                                 </Button>
@@ -226,5 +231,11 @@ const reserveBook = async () => {
             reserving.value = false;
         }
     });
+};
+
+const handleImageError = (event: Event) => {
+    const img = event.target as HTMLImageElement;
+    // Hide broken image and show placeholder
+    img.style.display = 'none';
 };
 </script>
